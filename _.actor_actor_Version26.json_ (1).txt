@@ -1,0 +1,17 @@
+{
+    "actorSpecification": 1,
+    "name": "ai-tool-directory-monitor",
+    "title": "AI Tool Directory Monitor",
+    "description": "Scrapes directories like Futurepedia to find and monitor new AI tools daily.",
+    "version": "0.0",
+    "meta": {
+        "templateId": "ai-generated-actor",
+        "generatedBy": "copilot-2026"
+    },
+    "input": "./input_schema.json",
+    "output": "./output_schema.json",
+    "storages": {
+        "dataset": "./dataset_schema.json"
+    },
+    "dockerfile": "../Dockerfile"
+}

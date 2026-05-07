@@ -1,0 +1,67 @@
+{
+    "actorSpecification": 1,
+    "fields": {
+        "toolName": {
+            "type": "string",
+            "title": "Tool Name"
+        },
+        "description": {
+            "type": "string",
+            "title": "Description"
+        },
+        "category": {
+            "type": "string",
+            "title": "Category"
+        },
+        "pricing": {
+            "type": "string",
+            "title": "Pricing"
+        },
+        "url": {
+            "type": "string",
+            "title": "URL"
+        },
+        "dateAdded": {
+            "type": "string",
+            "format": "date",
+            "title": "Date Added"
+        }
+    },
+    "views": {
+        "overview": {
+            "title": "Daily AI Tool Update Overview",
+            "transformation": {
+                "fields": ["toolName", "description", "category", "pricing", "url", "dateAdded"]
+            },
+            "display": {
+                "component": "table",
+                "properties": {
+                    "toolName": {
+                        "label": "Tool Name",
+                        "format": "text"
+                    },
+                    "description": {
+                        "label": "Description",
+                        "format": "text"
+                    },
+                    "category": {
+                        "label": "Category",
+                        "format": "text"
+                    },
+                    "pricing": {
+                        "label": "Pricing",
+                        "format": "text"
+                    },
+                    "url": {
+                        "label": "URL",
+                        "format": "link"
+                    },
+                    "dateAdded": {
+                        "label": "Date Added",
+                        "format": "date"
+                    }
+                }
+            }
+        }
+    }
+}

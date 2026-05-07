@@ -1,0 +1,30 @@
+{
+    "title": "Input Schema for AI Tool Directory Monitor",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "directoryUrls": {
+            "title": "AI Directories",
+            "type": "array",
+            "description": "URLs of AI tool directories to scrape (e.g., Futurepedia).",
+            "default": [
+                "https://www.futurepedia.io/",
+                "https://www.someai.com/"
+            ],
+            "editor": "requestListSources"
+        },
+        "dateFilter": {
+            "title": "Date filter for new tools",
+            "type": "string",
+            "description": "Only collect AI tools added after this date (format: YYYY-MM-DD).",
+            "default": "2023-01-01"
+        },
+        "maxToolsPerRun": {
+            "title": "Maximum tools per run",
+            "type": "integer",
+            "description": "Limit the number of tools scraped in a single run.",
+            "default": 100
+        }
+    },
+    "required": ["directoryUrls", "dateFilter"]
+}

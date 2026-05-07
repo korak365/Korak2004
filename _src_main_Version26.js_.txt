@@ -1,0 +1,68 @@
+// Import required modules
+import { Actor } from 'apify';
+import { CheerioCrawler, Dataset } from 'crawlee';
+import { parseISO, isAfter } from 'date-fns';
+
+await Actor.init();
+
+// Extract input data
+const { directoryUrls = [], dateFilter, maxToolsPerRun = 100 } = (await Actor.getInput()) || {};
+
+// Helper function: Filter tools added after a specific date
+const isToolNew = (date, dateFilter) => {
+    const parsedToolDate = parseISO(date);
+    const filterDate = parseISO(dateFilter);
+    return isAfter(parsedToolDate, filterDate);
+};
+
+// Define crawler
+const crawler = new CheerioCrawler({
+    maxConcurrency: 5,
+    async requestHandler({ $, request, log }) {
+        log.info(`Scraping directory: ${request.url}`);
+
+        // Select directory cards/items (modify selectors based on the website)
+        const toolCards = $('.tool-card'); // Adjust selector for each directory's structure
+        let toolCount = 0;
+
+        for (const card of toolCards) {
+            if (toolCount >= maxToolsPerRun) break;
+
+            const toolName = $(card).find('.tool-title').text().trim(); // Update selector
+            const description = $(card).find('.tool-description').text().trim(); // Update selector
+            const category = $(card).find('.tool-category').text().trim(); // Update selector
+            const pricing = $(card).find('.tool-pricing').text().trim(); // Update selector
+            const toolUrl = $(card).find('a.tool-link').attr('href'); // Update selector
+            const dateAdded = $(card).find('.tool-date').text().trim(); // Update selector
+
+            if (!toolName || !toolUrl || !dateAdded) continue;
+
+            // Check if the tool is new based on the date filter
+            if (!isToolNew(dateAdded, dateFilter)) continue;
+
+            // Save the tool's data
+            await Dataset.pushData({
+                toolName,
+                description,
+                category,
+                pricing,
+                url: toolUrl.startsWith('http') ? toolUrl : new URL(toolUrl, request.loadedUrl).toString(),
+                dateAdded,
+            });
+
+            toolCount++;
+        }
+
+        log.info(`Scraped ${toolCount} tools from ${request.url}`);
+    },
+});
+
+// Add URLs to crawler
+for (const url of directoryUrls) {
+    crawler.addRequests([{ url }]);
+}
+
+// Run the scraper
+await crawler.run();
+
+await Actor.exit();

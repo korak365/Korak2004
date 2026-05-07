@@ -1,0 +1,11 @@
+{
+    "actorOutputSchemaVersion": 1,
+    "title": "Output Schema for AI Tool Directory Monitor",
+    "properties": {
+        "overview": {
+            "type": "string",
+            "title": "Daily AI Tool Update",
+            "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+        }
+    }
+}
